@@ -1,9 +1,0 @@
-module.exports = {
-    "semi": false,
-    "singleQuote": true,
-    "trailingComma": "none",
-    "arrowParens": "avoid",
-    "bracketSameLine": false,
-    "singleAttributePerLine": true,
-    "printWidth": 120
-};

@@ -14,16 +14,12 @@
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
-    "@rushstack/eslint-patch": "^1.11.0",
+    "@antfu/eslint-config": "^4.13.2",
     "@types/node": "^22.15.21",
     "@vitejs/plugin-vue": "^5.2.3",
-    "@vue/eslint-config-prettier": "^10.2.0",
-    "@vue/eslint-config-typescript": "^14.5.0",
     "@vue/tsconfig": "^0.7.0",
     "eslint": "^9.27.0",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-vue": "^10.1.0",
-    "prettier": "3.5.3",
+    "eslint-plugin-format": "^1.0.1",
     "sass": "^1.89.0",
     "typescript": "~5.8.3",
     "vite": "^6.3.5",
