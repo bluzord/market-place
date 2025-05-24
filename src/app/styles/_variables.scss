@@ -1,0 +1,26 @@
+@use 'helpers' as *;
+
+:root {
+  --transition-duration: 0.2s;
+  --font-family-base: 'MuseoSansCyrl', sans-serif;
+
+  --color-primary: #a58df2;
+  --color-primary-hover: #7355d3;
+  --color-primary-active: #8cc83a;
+
+  --color-accent: #ff3d3d;
+
+  --color-dark: #303030;
+  --color-dark-accent: #73798c;
+  --color-caption: #a7aed2;
+
+  --color-light-gray: #f0f0f0;
+  --color-light: #ffffff;
+
+  --container-width: #{rem(1180)};
+  --container-padding-x: 0;
+
+  @include mobile {
+    --container-width: #{rem(345)};
+  }
+}

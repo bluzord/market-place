@@ -1,0 +1,83 @@
+@use 'helpers' as *;
+
+body {
+  @include fluid-text(18, 14);
+  font-family: var(--font-family-base), serif;
+  font-weight: 300;
+  color: var(--color-dark);
+  background-color: var(--color-light);
+  transition-duration: var(--transition-duration);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1,
+h2,
+h5 {
+  @include fluid-text(42, 20);
+  color: var(--color-dark);
+  font-family: var(--font-family-base), serif;
+  font-weight: 700;
+}
+
+h3,
+h4 {
+  color: var(--color-light);
+  font-family: var(--font-family-base), serif;
+  font-weight: 900;
+}
+
+h3 {
+  @include fluid-text(38, 24);
+}
+
+h4 {
+  @include fluid-text(28, 14);
+}
+
+h5 {
+  @include fluid-text(18, 14);
+}
+
+a,
+button,
+label,
+input,
+textarea,
+select,
+svg * {
+  transition-duration: var(--trasition-duration);
+}
+
+a {
+  color: inherit;
+
+  @include hover {
+    color: var(--color-primary-hover);
+  }
+
+  &[class] {
+    text-decoration: none;
+  }
+}
+
+:focus-visible {
+  outline: rem(2) dashed var(--color-dark-accent);
+  outline-offset: rem(4);
+  transition-duration: 0s !important;
+}
+
+button {
+  &[aria-label] {
+    position: relative;
+
+    &::before {
+      @include abs-center;
+      @include square(rem(44));
+
+      content: '';
+    }
+  }
+}
