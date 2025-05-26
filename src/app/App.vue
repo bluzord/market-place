@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { Button } from '@/shared/ui/Button'
+import { SearchBar } from '@/shared/ui/SearchBar'
 import './styles/main.scss'
 </script>
 
 <template>
-  <Button variant="outlined" icon="cross">
-    Купить
-  </Button>
+  <SearchBar placeholder="Поиск товаров" />
 </template>
 
 <style scoped lang="scss">

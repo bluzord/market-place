@@ -1,0 +1,70 @@
+@use '@/app/styles/helpers' as *;
+
+.search-bar {
+  @include flex-center();
+  position: relative;
+  width: rem(400);
+  height: rem(46);
+  overflow: hidden;
+  background-color: var(--color-light-gray);
+  color: var(--color-dark-accent);
+  border: none;
+  border-radius: rem(32);
+  padding-block: rem(15);
+  padding-inline: rem(17);
+
+  cursor: text;
+
+  &__icon {
+    position: absolute;
+    left: rem(125);
+    width: rem(18);
+    height: rem(18);
+    transition: left var(--transition-duration) ease;
+
+    &--active {
+      color: var(--color-primary-hover);
+    }
+  }
+
+  &__placeholder {
+    position: absolute;
+    left: rem(150);
+    user-select: none;
+    opacity: 1;
+    transition:
+      opacity var(--transition-duration) ease,
+      left var(--transition-duration) ease;
+  }
+
+  &__input {
+    position: absolute;
+    left: rem(150);
+    opacity: 0;
+    color: var(--color-dark);
+    max-width: 0;
+    background: none;
+    border: none;
+    outline: none;
+    transition:
+      opacity var(--transition-duration) ease,
+      left var(--transition-duration) ease;
+  }
+
+  &--active {
+    .search-bar__icon {
+      left: rem(17);
+    }
+
+    .search-bar__input {
+      opacity: 1;
+      left: rem(40);
+      max-width: 100%;
+    }
+
+    .search-bar__placeholder {
+      left: rem(40);
+      opacity: 0;
+    }
+  }
+}
