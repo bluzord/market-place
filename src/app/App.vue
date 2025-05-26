@@ -4,7 +4,7 @@ import './styles/main.scss'
 </script>
 
 <template>
-  <Button variant="icon" icon="cross">
+  <Button variant="outlined" icon="cross">
     Купить
   </Button>
 </template>

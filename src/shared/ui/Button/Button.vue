@@ -28,7 +28,7 @@ const isIconOnly = computed<boolean>(() =>
 </script>
 
 <template>
-  <button class="button" :class="[buttonVariant, { 'icon-only': isIconOnly }]" :disabled="disabled">
+  <button class="button" :class="buttonVariant" :disabled="disabled">
     <slot v-if="!isIconOnly" />
     <Icon v-else :icon="icon" />
   </button>
