@@ -1,0 +1,58 @@
+@use '@/app/styles/helpers' as *;
+
+.button {
+  @include flex-center();
+  font-weight: 500;
+  color: var(--color-light);
+  border-radius: rem(10);
+
+  &--filled {
+    background-color: var(--color-primary);
+    border: none;
+    padding: rem(12) rem(28);
+
+    @include hover {
+      background-color: var(--color-primary-hover);
+    }
+
+    &:active {
+      background-color: var(--color-primary-active);
+    }
+  }
+
+  &--outlined {
+    background-color: transparent;
+    border: 2px solid var(--color-light);
+    padding: rem(16) rem(40);
+
+    @include hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    &:active {
+      border-color: var(--color-primary-hover);
+      color: var(--color-primary-hover);
+    }
+  }
+
+  &--icon {
+    background-color: var(--color-light);
+    border: none;
+    color: var(--color-dark);
+    border-radius: 100%;
+    padding: rem(15);
+
+    -webkit-box-shadow: 0 rem(3) rem(10) 0 rgba(115, 121, 140, 0.3);
+    -moz-box-shadow: 0 rem(3) rem(10) 0 rgba(115, 121, 140, 0.3);
+    box-shadow: 0 rem(3) rem(10) 0 rgba(115, 121, 140, 0.3);
+
+    @include hover {
+      background-color: var(--color-primary);
+    }
+
+    &:active {
+      background-color: var(--color-gray);
+    }
+  }
+}

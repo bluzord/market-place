@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import { Button } from '@/shared/ui/Button'
 import './styles/main.scss'
 </script>
 
 <template>
-  <p>
-    test
-  </p>
+  <Button variant="icon" icon="cross">
+    Купить
+  </Button>
 </template>
 
 <style scoped lang="scss">
