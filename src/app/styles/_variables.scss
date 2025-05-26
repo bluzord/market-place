@@ -6,7 +6,7 @@
 
   --color-primary: #a58df2;
   --color-primary-hover: #7355d3;
-  --color-primary-active: #5b44a6;
+  --color-primary-active: #6446c5;
 
   --color-accent: #ff3d3d;
 
@@ -20,6 +20,10 @@
 
   --container-width: #{rem(1180)};
   --container-padding-x: 0;
+
+  @include tablet {
+    --container-width: #{rem(925)};
+  }
 
   @include mobile {
     --container-width: #{rem(345)};

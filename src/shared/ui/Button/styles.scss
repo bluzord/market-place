@@ -22,7 +22,7 @@
 
   &--outlined {
     background-color: transparent;
-    border: 2px solid var(--color-light);
+    border: rem(2) solid var(--color-light);
     padding: rem(16) rem(40);
 
     @include hover {
