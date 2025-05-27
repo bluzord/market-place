@@ -1,0 +1,15 @@
+@use '@/app/styles/helpers' as *;
+
+.logo {
+  &__path-to-hover {
+    transition: fill var(--transition-duration) ease;
+  }
+
+  &__svg {
+    @include hover() {
+      .logo__path-to-hover {
+        fill: var(--color-accent) !important;
+      }
+    }
+  }
+}
