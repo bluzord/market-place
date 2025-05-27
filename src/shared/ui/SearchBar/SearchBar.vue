@@ -13,26 +13,22 @@ const query = ref<string>('')
 const isFilled = computed<boolean>(() => query.value.length > 0)
 const isActive = computed<boolean>(() => isFocused.value || isFilled.value)
 
-function handleFocus() {
+function handleFocus(): void {
   isFocused.value = true
   nextTick(() => {
     inputRef.value?.focus()
-    const isMobile: boolean = window.matchMedia('(pointer: coarse)').matches
-    if (isMobile)
-      return
-    inputRef.value?.select()
   })
 }
 
-function handleBlur() {
+function handleBlur(): void {
   isFocused.value = false
 }
 
-function handleEsc() {
+function handleEsc(): void {
   inputRef.value?.blur()
 }
 
-function clearInput() {
+function clearInput(): void {
   query.value = ''
 }
 </script>
@@ -65,7 +61,7 @@ function clearInput() {
       @blur="handleBlur"
     >
     <Icon
-      v-show="isActive && query.length > 0" icon="cross" class="search-bar__cross visible-tablet" aria-hidden="true"
+      v-show="isActive && query.length > 0" icon="cross" class="search-bar__cross" aria-hidden="true"
       @click="clearInput"
     />
   </div>
