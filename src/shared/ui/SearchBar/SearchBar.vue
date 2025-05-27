@@ -17,6 +17,9 @@ function handleFocus() {
   isFocused.value = true
   nextTick(() => {
     inputRef.value?.focus()
+    const isMobile: boolean = window.matchMedia('(pointer: coarse)').matches
+    if (isMobile)
+      return
     inputRef.value?.select()
   })
 }
@@ -27,6 +30,10 @@ function handleBlur() {
 
 function handleEsc() {
   inputRef.value?.blur()
+}
+
+function clearInput() {
+  query.value = ''
 }
 </script>
 
@@ -40,20 +47,27 @@ function handleEsc() {
     @focus="handleFocus"
     @keydown.esc="handleEsc"
   >
-    <Icon
-      icon="search"
-      class="search-bar__icon"
-      :class="[{ 'search-bar__icon--active': isFocused }]"
-      aria-hidden="true"
-    />
-    <span class="search-bar__placeholder" aria-hidden="true">{{ placeholder }}</span>
+    <div class="search-bar__center">
+      <Icon
+        icon="search"
+        class="search-bar__icon"
+        :class="[{ 'search-bar__icon--active': isFocused }]"
+        aria-hidden="true"
+      />
+      <span v-show="!isActive" class="search-bar__placeholder" aria-hidden="true">{{ placeholder }}</span>
+    </div>
     <input
+      v-show="isActive"
       ref="inputRef"
       v-model="query"
       type="text"
       class="search-bar__input"
       @blur="handleBlur"
     >
+    <Icon
+      v-show="isActive && query.length > 0" icon="cross" class="search-bar__cross visible-tablet" aria-hidden="true"
+      @click="clearInput"
+    />
   </div>
 </template>
 
