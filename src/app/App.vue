@@ -1,9 +1,13 @@
 <script setup lang="ts">
+import { Header } from '@/widgets/Header'
 import './styles/main.scss'
 </script>
 
 <template>
-  <RouterView />
+  <Header />
+  <main class="main">
+    <RouterView />
+  </main>
 </template>
 
 <style scoped lang="scss">

@@ -1,0 +1,68 @@
+@use '@/app/styles/helpers' as *;
+
+.header {
+  &__inner {
+    @include flex-center();
+    padding-block: rem(20);
+  }
+
+  &__top {
+    @include flex-center();
+    gap: rem(110);
+  }
+
+  &__top-left,
+  &__top-right {
+    @include flex-center();
+    gap: rem(50);
+  }
+
+  &__contact {
+    @include flex-center();
+    flex-direction: column;
+    gap: rem(4);
+
+    &-text {
+      font-weight: 500;
+      font-size: rem(14);
+      color: var(--color-caption);
+    }
+
+    &-number {
+      font-weight: 700;
+    }
+  }
+
+  &__login-button {
+    font-weight: 500;
+    padding: rem(8) rem(19);
+    border: 1px solid var(--color-gray);
+    border-radius: rem(21);
+    color: var(--color-dark);
+  }
+
+  @include desktop {
+    &__top {
+      gap: rem(40);
+    }
+
+    &__top-left,
+    &__top-right {
+      gap: rem(30);
+    }
+  }
+
+  @include tablet {
+    &__top {
+      gap: rem(30);
+    }
+
+    &__top-left {
+      gap: rem(20);
+    }
+
+    &__contact {
+      display: none;
+    }
+  }
+}

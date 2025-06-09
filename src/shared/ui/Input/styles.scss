@@ -1,0 +1,26 @@
+@use '@/app/styles/helpers' as *;
+
+.input {
+  border: rem(1) solid var(--color-caption);
+  border-radius: rem(10);
+  padding: rem(12);
+  width: rem(380);
+
+  &::placeholder {
+    color: var(--color-caption);
+  }
+
+  &:focus-visible {
+    outline: none;
+    outline-offset: 0;
+    border-color: var(--color-primary-hover);
+  }
+
+  &--invalid {
+    border-color: var(--color-accent);
+
+    &::placeholder {
+      color: var(--color-accent);
+    }
+  }
+}
