@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { City } from '@/features/LocationPicker/types'
 import { onClickOutside } from '@vueuse/core'
 import { onMounted, ref } from 'vue'
 import { useLocationStore } from '@/features/LocationPicker/model/store.ts'
@@ -21,7 +20,7 @@ function closeModal() {
   locationStore.data = []
 }
 
-function selectCity(city: City) {
+function selectCity(city: string) {
   locationStore.selectCity(city)
   closeModal()
 }
@@ -31,81 +30,124 @@ onClickOutside(modalRef, closeModal)
 onMounted(() => {
   // locationStore.loadCityFromStorage()
 })
+q
 </script>
 
 <template>
-  <div class="location-picker" @keydown.esc="closeModal">
-    <div class="location-picker__main" @click="openModal">
-      <Icon icon="location" class="location-picker__icon" />
-      <p class="location-picker__city">
+  <div class="location-picker">
+    <button
+      class="location-picker__trigger"
+      aria-label="Выбрать город"
+      title="Выбрать город"
+      @click="openModal"
+    >
+      <Icon icon="location" class="location-picker__trigger-icon" />
+      <span class="location-picker__trigger-city">
         {{ locationStore.selectedCity ?? 'Москва' }}
-      </p>
-    </div>
+      </span>
+    </button>
+
     <Teleport to="#modal">
-      <div v-if="isModalOpen" class="location-picker__modal">
+      <div
+        v-if="isModalOpen"
+        class="location-picker__modal"
+        aria-modal="true"
+        aria-labelledby="location-modal-title"
+      >
         <Loader v-if="locationStore.isLoading" />
-        <div v-else ref="modalRef" class="location-picker__modal-inner">
-          <h1 class="location-picker__modal-title">
-            Ваш город
-          </h1>
-          <Icon icon="cross" class="location-picker__modal-close" @click="closeModal" />
-          <SearchBar placeholder="Найти город" class="location-picker__modal-search" />
-          <div class="location-picker__popular-cities">
+        <div v-else ref="modalRef" class="location-picker__modal-content">
+          <header class="location-picker__modal-header">
+            <h2 id="location-modal-title" class="location-picker__modal-title">
+              Ваш город
+            </h2>
             <button
-              v-for="city in locationStore.mostPopulatedCities" :key="city.name"
-              class="location-picker__popular-city"
-              @click="selectCity(city)"
+              class="location-picker__modal-close"
+              aria-label="Закрыть выбор города"
+              @click="closeModal"
             >
-              {{ city.name }}
+              <Icon icon="cross" class="location-picker__modal-close-icon" />
             </button>
-          </div>
-          <div class="location-picker__columns">
-            <div class="location-picker__column">
-              <h2 class="location-picker__column-title">
+          </header>
+
+          <SearchBar
+            placeholder="Найти город"
+            class="location-picker__modal-search"
+            role="search"
+          />
+
+          <nav aria-label="Популярные города">
+            <ul class="location-picker__modal-popular-cities" role="listbox">
+              <li
+                v-for="city in locationStore.mostPopulatedCities"
+                :key="city"
+                class="location-picker__modal-popular-city"
+                role="option"
+                :aria-selected="city === locationStore.selectedCity"
+                @click="selectCity(city)"
+              >
+                {{ city }}
+              </li>
+            </ul>
+          </nav>
+
+          <section class="location-picker__modal-columns">
+            <article class="location-picker__modal-column">
+              <h3 class="location-picker__modal-column-title">
                 Округ
-              </h2>
-              <div class="location-picker__column-items">
-                <div
-                  v-for="district in locationStore.districts" :key="district"
-                  class="location-picker__column-item"
-                  :class="[{ 'location-picker__column-item--active': district === locationStore.selectedDistrict }]"
+              </h3>
+              <ul class="location-picker__modal-column-items" role="listbox" aria-label="Список округов">
+                <li
+                  v-for="district in locationStore.districts"
+                  :key="district"
+                  class="location-picker__modal-column-item"
+                  :class="{ 'location-picker__modal-column-item--selected': district === locationStore.selectedDistrict }"
+                  role="option"
+                  :aria-selected="district === locationStore.selectedDistrict"
                   @click="locationStore.selectDistrict(district)"
                 >
                   {{ district }}
-                </div>
-              </div>
-            </div>
-            <div class="location-picker__column">
-              <h2 class="location-picker__column-title">
+                </li>
+              </ul>
+            </article>
+
+            <article class="location-picker__modal-column">
+              <h3 class="location-picker__modal-column-title">
                 Регион
-              </h2>
-              <div class="location-picker__column-items">
-                <div
-                  v-for="subject in locationStore.subjects" :key="subject"
-                  class="location-picker__column-item"
-                  :class="[{ 'location-picker__column-item--active': subject === locationStore.selectedSubject }]"
+              </h3>
+              <ul class="location-picker__modal-column-items" role="listbox" aria-label="Список регионов">
+                <li
+                  v-for="subject in locationStore.subjects"
+                  :key="subject"
+                  class="location-picker__modal-column-item"
+                  :class="{ 'location-picker__modal-column-item--selected': subject === locationStore.selectedSubject }"
+                  role="option"
+                  :aria-selected="subject === locationStore.selectedSubject"
                   @click="locationStore.selectSubject(subject)"
                 >
                   {{ subject }}
-                </div>
-              </div>
-            </div>
-            <div class="location-picker__column">
-              <h2 class="location-picker__column-title">
+                </li>
+              </ul>
+            </article>
+
+            <article class="location-picker__modal-column">
+              <h3 class="location-picker__modal-column-title">
                 Город
-              </h2>
-              <div class="location-picker__column-items">
-                <div
-                  v-for="city in locationStore.cities" :key="city.name"
-                  class="location-picker__column-item"
-                  :class="[{ 'location-picker__column-item--active': city.name === locationStore.selectedCity }]"
+              </h3>
+              <ul class="location-picker__modal-column-items" role="listbox" aria-label="Список городов">
+                <li
+                  v-for="city in locationStore.cities"
+                  :key="city"
+                  class="location-picker__modal-column-item"
+                  :class="{ 'location-picker__modal-column-item--selected': city === locationStore.selectedCity }"
+                  role="option"
+                  :aria-selected="city === locationStore.selectedCity"
                   @click="selectCity(city)"
                 >
-                  {{ city.name }}
-                </div>
-              </div>
-            </div>
-          </div>
+                  {{ city }}
+                </li>
+              </ul>
+            </article>
+          </section>
         </div>
       </div>
     </Teleport>

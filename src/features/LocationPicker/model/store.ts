@@ -13,7 +13,8 @@ export const useLocationStore = defineStore('location', () => {
   const mostPopulatedCities = computed(() =>
     [...data.value]
       .sort((a, b) => b.population - a.population)
-      .slice(0, 10))
+      .slice(0, 10)
+      .map(el => el.name))
 
   const districts = computed(() =>
     [...new Set(data.value
@@ -36,6 +37,7 @@ export const useLocationStore = defineStore('location', () => {
 
     return data.value
       .filter(el => el.subject === selectedSubject.value)
+      .map(el => el.name)
   })
 
   async function fetchCities() {
@@ -51,9 +53,14 @@ export const useLocationStore = defineStore('location', () => {
     }
   }
 
-  function selectCity(city: City) {
-    selectedCity.value = city.name
-    localStorage.setItem('city', city.name)
+  function selectCity(city: string) {
+    selectedCity.value = city
+    const cityObj: City | undefined = data.value.find(el => el.name === city)
+    if (!cityObj)
+      return
+    selectedDistrict.value = cityObj.district
+    selectedSubject.value = cityObj.subject
+    localStorage.setItem('city', city)
   }
 
   function selectDistrict(district: string) {

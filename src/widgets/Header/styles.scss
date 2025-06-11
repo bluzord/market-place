@@ -8,13 +8,16 @@
 
   &__top {
     @include flex-center();
-    gap: rem(110);
   }
 
   &__top-left,
   &__top-right {
     @include flex-center();
     gap: rem(50);
+  }
+
+  &__top-right {
+    margin-left: rem(100);
   }
 
   &__contact {
@@ -42,23 +45,23 @@
   }
 
   @include desktop {
-    &__top {
-      gap: rem(40);
-    }
-
     &__top-left,
     &__top-right {
-      gap: rem(30);
+      gap: rem(20);
+    }
+
+    &__top-right {
+      margin-left: rem(40);
     }
   }
 
   @include tablet {
-    &__top {
-      gap: rem(30);
-    }
-
     &__top-left {
       gap: rem(20);
+    }
+
+    &__top-right {
+      margin-left: rem(30);
     }
 
     &__contact {

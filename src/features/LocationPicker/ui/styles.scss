@@ -1,28 +1,181 @@
 @use '@/app/styles/helpers' as *;
 
+//.location-picker {
+//  &__main {
+//    @include flex-center();
+//    gap: rem(5);
+//    cursor: pointer;
+//
+//    @include hover() {
+//      .location-picker__icon {
+//        color: var(--color-accent);
+//      }
+//    }
+//  }
+//
+//  &__icon {
+//    width: rem(16);
+//    height: rem(16);
+//    color: var(--color-primary);
+//  }
+//
+//  &__city {
+//    font-size: rem(16);
+//    font-weight: 500;
+//    min-width: rem(150);
+//  }
+//
+//  &__modal {
+//    @include flex-center();
+//    position: fixed;
+//    top: 0;
+//    left: 0;
+//    right: 0;
+//    bottom: 0;
+//    background-color: rgba(0, 0, 0, 0.3);
+//    z-index: 1000;
+//
+//    &-inner {
+//      display: flex;
+//      position: relative;
+//      flex-direction: column;
+//      justify-content: center;
+//      border-radius: rem(30);
+//      max-width: rem(700);
+//      gap: rem(20);
+//      background-color: var(--color-light);
+//      padding: rem(20);
+//    }
+//
+//    &-title {
+//      font-size: rem(18);
+//    }
+//
+//    &-search {
+//      align-self: center;
+//    }
+//
+//    &-close {
+//      position: absolute;
+//      top: rem(20);
+//      right: rem(20);
+//      color: var(--color-caption);
+//      cursor: pointer;
+//
+//      height: rem(20);
+//      width: rem(20);
+//
+//      @include hover() {
+//        color: var(--color-primary-hover);
+//      }
+//    }
+//  }
+//
+//  &__popular-cities {
+//    @include flex-center();
+//    flex-wrap: wrap;
+//    gap: rem(10);
+//  }
+//
+//  &__popular-city {
+//    font-size: rem(14);
+//    padding-inline: rem(10);
+//    padding-block: rem(6);
+//    background-color: var(--color-light-gray);
+//    border-radius: rem(10);
+//    border: none;
+//
+//    @include hover() {
+//      color: var(--color-light);
+//      background-color: var(--color-primary);
+//    }
+//  }
+//
+//  &__columns {
+//    display: flex;
+//    align-items: flex-start;
+//    justify-content: space-between;
+//  }
+//
+//  &__column {
+//    display: flex;
+//    flex-direction: column;
+//    gap: rem(10);
+//    min-width: rem(220);
+//
+//    &-title {
+//      font-size: rem(18);
+//      padding-left: rem(10);
+//    }
+//
+//    &-items {
+//      display: flex;
+//      flex-direction: column;
+//      gap: rem(6);
+//      font-size: rem(16);
+//      min-height: 100%;
+//      max-height: rem(394);
+//      min-width: 100%;
+//      overflow: auto;
+//    }
+//
+//    &-item {
+//      padding: rem(10);
+//      border-radius: rem(10);
+//
+//      &--active {
+//        color: var(--color-light);
+//        background-color: var(--color-primary);
+//      }
+//
+//      @include hover() {
+//        color: var(--color-light);
+//        background-color: var(--color-primary);
+//        cursor: pointer;
+//      }
+//    }
+//  }
+//
+//  @include tablet {
+//    &__main {
+//      flex-direction: column;
+//    }
+//
+//    &__city {
+//      font-size: rem(12);
+//      text-align: center;
+//      min-width: rem(107);
+//    }
+//  }
+//}
+
 .location-picker {
-  &__main {
+  &__trigger {
     @include flex-center();
     gap: rem(5);
     cursor: pointer;
 
+    background: none;
+    border: none;
+
+    &-icon {
+      width: rem(16);
+      height: rem(16);
+      color: var(--color-primary);
+    }
+
+    &-city {
+      font-size: rem(16);
+      font-weight: 500;
+      min-width: rem(225);
+      text-align: start;
+    }
+
     @include hover() {
-      .location-picker__icon {
+      .location-picker__trigger-icon {
         color: var(--color-accent);
       }
     }
-  }
-
-  &__icon {
-    width: rem(16);
-    height: rem(16);
-    color: var(--color-primary);
-  }
-
-  &__city {
-    font-size: rem(16);
-    font-weight: 500;
-    min-width: rem(150);
   }
 
   &__modal {
@@ -35,116 +188,141 @@
     background-color: rgba(0, 0, 0, 0.3);
     z-index: 1000;
 
-    &-inner {
+    &-content {
       display: flex;
-      position: relative;
       flex-direction: column;
       justify-content: center;
-      border-radius: rem(30);
-      max-width: rem(700);
       gap: rem(20);
+      border-radius: rem(30);
+      max-width: rem(818);
       background-color: var(--color-light);
       padding: rem(20);
     }
 
+    &-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
     &-title {
       font-size: rem(18);
+    }
+
+    &-close {
+      @include flex-center();
+      width: rem(40);
+      height: rem(40);
+      background: none;
+      border: none;
+
+      &-icon {
+        color: var(--color-caption);
+        height: rem(20);
+        width: rem(20);
+      }
+
+      @include hover() {
+        .location-picker__modal-close-icon {
+          color: var(--color-primary-hover);
+        }
+      }
     }
 
     &-search {
       align-self: center;
     }
 
-    &-close {
-      position: absolute;
-      top: rem(20);
-      right: rem(20);
-      color: var(--color-caption);
-      cursor: pointer;
+    &-popular-cities {
+      @include flex-center();
+      flex-wrap: wrap;
+      gap: rem(10);
+    }
 
-      height: rem(20);
-      width: rem(20);
+    &-popular-city {
+      font-size: rem(14);
+      padding-inline: rem(10);
+      padding-block: rem(6);
+      background-color: var(--color-light-gray);
+      border-radius: rem(10);
+      border: none;
 
       @include hover() {
-        color: var(--color-primary-hover);
+        cursor: pointer;
+        color: var(--color-light);
+        background-color: var(--color-primary);
       }
     }
-  }
 
-  &__popular-cities {
-    @include flex-center();
-    flex-wrap: wrap;
-    gap: rem(10);
-  }
-
-  &__popular-city {
-    font-size: rem(14);
-    padding-inline: rem(10);
-    padding-block: rem(6);
-    background-color: var(--color-light-gray);
-    border-radius: rem(10);
-    border: none;
-
-    @include hover() {
-      color: var(--color-light);
-      background-color: var(--color-primary);
-    }
-  }
-
-  &__columns {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-  }
-
-  &__column {
-    display: flex;
-    flex-direction: column;
-    gap: rem(10);
-    min-width: rem(220);
-
-    &-title {
-      font-size: rem(18);
-      padding-left: rem(10);
+    &-columns {
+      display: flex;
+      align-items: flex-start;
+      gap: rem(20);
     }
 
-    &-items {
+    &-column {
       display: flex;
       flex-direction: column;
-      gap: rem(6);
-      font-size: rem(16);
-      min-height: 100%;
-      max-height: rem(394);
-      min-width: 100%;
-      overflow: auto;
-    }
+      gap: rem(10);
+      min-width: rem(240);
 
-    &-item {
-      padding: rem(10);
-      border-radius: rem(10);
-
-      &--active {
-        color: var(--color-light);
-        background-color: var(--color-primary);
+      &:nth-child(2) {
+        .location-picker__modal-column-items {
+          border-left: rem(1) solid var(--color-light-gray);
+          border-right: rem(1) solid var(--color-light-gray);
+        }
       }
 
-      @include hover() {
-        color: var(--color-light);
-        background-color: var(--color-primary);
-        cursor: pointer;
+      &-title {
+        font-size: rem(18);
+        color: var(--color-dark);
+        padding-left: rem(10);
       }
-    }
-  }
 
-  @include tablet {
-    &__main {
-      flex-direction: column;
-    }
+      &-items {
+        display: flex;
+        flex-direction: column;
+        gap: rem(6);
+        font-size: rem(16);
+        height: rem(394);
+        overflow: auto;
+        padding-inline: rem(6);
 
-    &__city {
-      font-size: rem(12);
-      text-align: center;
-      min-width: rem(107);
+        &::-webkit-scrollbar {
+          width: rem(6);
+          height: rem(6);
+        }
+        &::-webkit-scrollbar-track {
+          border-radius: rem(10);
+          background: rgba(0, 0, 0, 0.1);
+        }
+        &::-webkit-scrollbar-thumb {
+          border-radius: rem(10);
+          background: rgba(0, 0, 0, 0.2);
+        }
+        &::-webkit-scrollbar-thumb:hover {
+          background: rgba(0, 0, 0, 0.4);
+        }
+        &::-webkit-scrollbar-thumb:active {
+          background: rgba(0, 0, 0, 0.9);
+        }
+      }
+
+      &-item {
+        padding: rem(10);
+        border-radius: rem(10);
+
+        &--selected {
+          color: var(--color-light);
+          background-color: var(--color-primary);
+        }
+
+        @include hover() {
+          color: var(--color-light);
+          background-color: var(--color-primary);
+          cursor: pointer;
+        }
+      }
     }
   }
 }

@@ -1,5 +1,11 @@
 @use 'helpers' as *;
 
+
+html {
+  overflow-y: scroll;
+}
+
+
 body {
   @include fluid-text(18, 14);
   font-family: var(--font-family-base), serif;
@@ -7,10 +13,13 @@ body {
   color: var(--color-dark);
   background-color: var(--color-light);
   transition-duration: var(--transition-duration);
+  min-width: 100%;
 
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 0 !important;
+  box-sizing: border-box;
 }
 
 h1,
