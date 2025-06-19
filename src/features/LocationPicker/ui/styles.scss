@@ -191,10 +191,11 @@
     &-content {
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
       gap: rem(20);
       border-radius: rem(30);
-      max-width: rem(818);
+      width: rem(818);
+      height: rem(737);
       background-color: var(--color-light);
       padding: rem(20);
     }
@@ -322,6 +323,24 @@
           background-color: var(--color-primary);
           cursor: pointer;
         }
+      }
+    }
+
+    &-search-results {
+      max-height: rem(527);
+      overflow: auto;
+    }
+
+    &-search-list {
+      display: flex;
+      flex-direction: column;
+      gap: rem(10);
+    }
+
+    &-search-item {
+      @include hover() {
+        cursor: pointer;
+        color: var(--color-primary-hover);
       }
     }
   }

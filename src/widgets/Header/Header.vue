@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { LocationPicker } from '@/features/LocationPicker'
 import { Button } from '@/shared/ui/Button'
 import { Logo } from '@/shared/ui/Logo'
 import { SearchBar } from '@/shared/ui/SearchBar'
+
+const query = ref<string>('')
 </script>
 
 <template>
@@ -14,7 +17,7 @@ import { SearchBar } from '@/shared/ui/SearchBar'
           <LocationPicker class="header__location-picker" />
         </div>
         <!-- TODO: компонент поиска товаров -->
-        <SearchBar placeholder="Поиск товаров" />
+        <SearchBar :model-value="query" placeholder="Поиск товаров" />
         <div class="header__top-right">
           <div class="header__contact">
             <p class="header__contact-text">

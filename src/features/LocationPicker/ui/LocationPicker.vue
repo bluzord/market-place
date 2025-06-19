@@ -22,6 +22,7 @@ function closeModal() {
 
 function selectCity(city: string) {
   locationStore.selectCity(city)
+  locationStore.searchQuery = ''
   closeModal()
 }
 
@@ -30,7 +31,6 @@ onClickOutside(modalRef, closeModal)
 onMounted(() => {
   // locationStore.loadCityFromStorage()
 })
-q
 </script>
 
 <template>
@@ -70,12 +70,14 @@ q
           </header>
 
           <SearchBar
+            :model-value="locationStore.searchQuery"
             placeholder="Найти город"
             class="location-picker__modal-search"
             role="search"
+            @update:model-value="locationStore.searchQuery = $event"
           />
 
-          <nav aria-label="Популярные города">
+          <nav v-if="!locationStore.searchQuery" aria-label="Популярные города">
             <ul class="location-picker__modal-popular-cities" role="listbox">
               <li
                 v-for="city in locationStore.mostPopulatedCities"
@@ -90,7 +92,7 @@ q
             </ul>
           </nav>
 
-          <section class="location-picker__modal-columns">
+          <section v-if="!locationStore.searchQuery" class="location-picker__modal-columns">
             <article class="location-picker__modal-column">
               <h3 class="location-picker__modal-column-title">
                 Округ
@@ -147,6 +149,19 @@ q
                 </li>
               </ul>
             </article>
+          </section>
+
+          <section v-if="locationStore.searchQuery" class="location-picker__modal-search-results">
+            <ul class="location-picker__modal-search-list">
+              <li
+                v-for="city in locationStore.filteredCities"
+                :key="city"
+                class="location-picker__modal-search-item"
+                @click="selectCity(city)"
+              >
+                {{ city }}
+              </li>
+            </ul>
           </section>
         </div>
       </div>

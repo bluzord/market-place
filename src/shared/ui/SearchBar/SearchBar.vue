@@ -1,14 +1,21 @@
 <script setup lang="ts">
+import { useVModel } from '@vueuse/core'
 import { computed, nextTick, ref } from 'vue'
 import { Icon } from '@/shared/ui/Icon'
 
-defineProps<{
+const props = defineProps<{
   placeholder: string
+  modelValue: string
 }>()
+
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: string): void
+}>()
+
+const query = useVModel(props, 'modelValue', emit)
 
 const isFocused = ref<boolean>(false)
 const inputRef = ref<HTMLInputElement | null>(null)
-const query = ref<string>('')
 
 const isFilled = computed<boolean>(() => query.value.length > 0)
 const isActive = computed<boolean>(() => isFocused.value || isFilled.value)

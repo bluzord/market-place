@@ -1,4 +1,5 @@
 import type { City } from '@/features/LocationPicker/types'
+import { useFuse } from '@vueuse/integrations/useFuse'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { api } from '@/features/LocationPicker/api'
@@ -9,6 +10,7 @@ export const useLocationStore = defineStore('location', () => {
   const selectedSubject = ref<string | null>(null)
   const selectedCity = ref<string | null>(null)
   const isLoading = ref<boolean>(false)
+  const searchQuery = ref<string>('')
 
   const mostPopulatedCities = computed(() =>
     [...data.value]
@@ -38,6 +40,17 @@ export const useLocationStore = defineStore('location', () => {
     return data.value
       .filter(el => el.subject === selectedSubject.value)
       .map(el => el.name)
+  })
+
+  const { results: fuseResults } = useFuse(searchQuery, data, {
+    fuseOptions: {
+      keys: ['name'],
+      threshold: 0.03,
+    },
+  })
+
+  const filteredCities = computed(() => {
+    return fuseResults.value.map(el => el.item.name)
   })
 
   async function fetchCities() {
@@ -94,5 +107,7 @@ export const useLocationStore = defineStore('location', () => {
     selectSubject,
     loadCityFromStorage,
     fetchCities,
+    searchQuery,
+    filteredCities,
   }
 })
