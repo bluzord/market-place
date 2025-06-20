@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core'
-import { onMounted, ref } from 'vue'
+import { nextTick, onMounted, ref } from 'vue'
 import { useLocationStore } from '@/features/LocationPicker/model/store.ts'
 import { Icon } from '@/shared/ui/Icon'
 import { Loader } from '@/shared/ui/Loader'
@@ -10,9 +10,25 @@ const isModalOpen = ref<boolean>(false)
 const modalRef = ref<HTMLDivElement | null>(null)
 const locationStore = useLocationStore()
 
-function openModal() {
+const districtsRef = ref<HTMLElement[]>([])
+const subjectsRef = ref<HTMLElement[]>([])
+const citiesRef = ref<HTMLElement[]>([])
+
+async function openModal() {
   isModalOpen.value = true
-  locationStore.fetchCities()
+  await locationStore.fetchCities()
+  await nextTick(() => {
+    const selectedDistrictIndex = locationStore.districts.findIndex(district => district === locationStore.selectedDistrict)
+    const selectedSubjectIndex = locationStore.subjects.findIndex(subject => subject === locationStore.selectedSubject)
+    const selectedCityIndex = locationStore.cities.findIndex(city => city === locationStore.selectedCity)
+
+    if (selectedDistrictIndex === -1 || selectedSubjectIndex === -1 || selectedCityIndex === -1)
+      return
+
+    districtsRef.value[selectedDistrictIndex]?.scrollIntoView({ block: 'center' })
+    subjectsRef.value[selectedSubjectIndex]?.scrollIntoView({ block: 'center' })
+    citiesRef.value[selectedCityIndex]?.scrollIntoView({ block: 'center' })
+  })
 }
 
 function closeModal() {
@@ -101,6 +117,7 @@ onMounted(() => {
                 <li
                   v-for="district in locationStore.districts"
                   :key="district"
+                  ref="districtsRef"
                   class="location-picker__modal-column-item"
                   :class="{ 'location-picker__modal-column-item--selected': district === locationStore.selectedDistrict }"
                   role="option"
@@ -120,6 +137,7 @@ onMounted(() => {
                 <li
                   v-for="subject in locationStore.subjects"
                   :key="subject"
+                  ref="subjectsRef"
                   class="location-picker__modal-column-item"
                   :class="{ 'location-picker__modal-column-item--selected': subject === locationStore.selectedSubject }"
                   role="option"
@@ -139,6 +157,7 @@ onMounted(() => {
                 <li
                   v-for="city in locationStore.cities"
                   :key="city"
+                  ref="citiesRef"
                   class="location-picker__modal-column-item"
                   :class="{ 'location-picker__modal-column-item--selected': city === locationStore.selectedCity }"
                   role="option"
