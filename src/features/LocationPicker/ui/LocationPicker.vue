@@ -45,7 +45,7 @@ function selectCity(city: string) {
 onClickOutside(modalRef, closeModal)
 
 onMounted(() => {
-  // locationStore.loadCityFromStorage()
+  locationStore.loadCityFromStorage()
 })
 </script>
 

@@ -73,7 +73,11 @@ export const useLocationStore = defineStore('location', () => {
       return
     selectedDistrict.value = cityObj.district
     selectedSubject.value = cityObj.subject
-    localStorage.setItem('city', city)
+    localStorage.setItem('location', JSON.stringify({
+      district: selectedDistrict.value,
+      subject: selectedSubject.value,
+      city: selectedCity.value,
+    }))
   }
 
   function selectDistrict(district: string) {
@@ -86,9 +90,12 @@ export const useLocationStore = defineStore('location', () => {
   }
 
   function loadCityFromStorage() {
-    const raw = localStorage.getItem('city')
+    const raw = localStorage.getItem('location')
     if (raw) {
-      selectedCity.value = JSON.parse(raw)
+      const { district, subject, city } = JSON.parse(raw)
+      selectedCity.value = city
+      selectedDistrict.value = district
+      selectedSubject.value = subject
     }
   }
 
