@@ -1,0 +1,68 @@
+@use '@/app/styles/helpers' as *;
+
+.location-picker__modal {
+  &-column {
+    display: flex;
+    flex-direction: column;
+    gap: rem(10);
+    min-width: rem(240);
+
+    &:nth-child(2) {
+      .location-picker__modal-column-items {
+        border-left: rem(1) solid var(--color-light-gray);
+        border-right: rem(1) solid var(--color-light-gray);
+      }
+    }
+
+    &-title {
+      font-size: rem(18);
+      color: var(--color-dark);
+      padding-left: rem(10);
+    }
+
+    &-items {
+      display: flex;
+      flex-direction: column;
+      gap: rem(6);
+      font-size: rem(16);
+      height: rem(394);
+      overflow: auto;
+      padding-inline: rem(6);
+
+      &::-webkit-scrollbar {
+        width: rem(6);
+        height: rem(6);
+      }
+      &::-webkit-scrollbar-track {
+        border-radius: rem(10);
+        background: rgba(0, 0, 0, 0.1);
+      }
+      &::-webkit-scrollbar-thumb {
+        border-radius: rem(10);
+        background: rgba(0, 0, 0, 0.2);
+      }
+      &::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 0, 0, 0.4);
+      }
+      &::-webkit-scrollbar-thumb:active {
+        background: rgba(0, 0, 0, 0.9);
+      }
+    }
+
+    &-item {
+      padding: rem(10);
+      border-radius: rem(10);
+
+      &--selected {
+        color: var(--color-light);
+        background-color: var(--color-primary);
+      }
+
+      @include hover() {
+        color: var(--color-light);
+        background-color: var(--color-primary);
+        cursor: pointer;
+      }
+    }
+  }
+}

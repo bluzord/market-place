@@ -11,6 +11,7 @@ export const useLocationStore = defineStore('location', () => {
   const selectedCity = ref<string | null>(null)
   const isLoading = ref<boolean>(false)
   const searchQuery = ref<string>('')
+  const isModalOpen = ref<boolean>(false)
 
   const mostPopulatedCities = computed(() =>
     [...data.value]
@@ -99,6 +100,16 @@ export const useLocationStore = defineStore('location', () => {
     }
   }
 
+  function closeModal() {
+    isModalOpen.value = false
+    data.value = []
+  }
+
+  async function openModal() {
+    isModalOpen.value = true
+    await fetchCities()
+  }
+
   return {
     data,
     selectedCity,
@@ -113,8 +124,10 @@ export const useLocationStore = defineStore('location', () => {
     selectDistrict,
     selectSubject,
     loadCityFromStorage,
-    fetchCities,
     searchQuery,
     filteredCities,
+    isModalOpen,
+    closeModal,
+    openModal,
   }
 })
