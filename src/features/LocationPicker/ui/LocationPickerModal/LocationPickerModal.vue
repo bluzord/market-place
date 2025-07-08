@@ -3,6 +3,7 @@ import { onClickOutside } from '@vueuse/core'
 import { onMounted, ref, watch } from 'vue'
 import { useLocationStore } from '@/features/LocationPicker/model/store.ts'
 import { LocationPickerColumn } from '@/features/LocationPicker/ui/LocationPickerColumn'
+import { useBreakpoint } from '@/shared/composables/useBreakpoint.ts'
 import { Icon } from '@/shared/ui/Icon'
 import { Loader } from '@/shared/ui/Loader'
 import { SearchBar } from '@/shared/ui/SearchBar'
@@ -13,8 +14,12 @@ const districtsRef = ref<InstanceType<typeof LocationPickerColumn> | null>(null)
 const subjectsRef = ref<InstanceType<typeof LocationPickerColumn> | null>(null)
 const citiesRef = ref<InstanceType<typeof LocationPickerColumn> | null>(null)
 
-function selectCity(city: string) {
-  locationStore.selectCity(city)
+const { isTablet } = useBreakpoint()
+
+function selectCity(city: string, subject?: string) {
+  if (!subject)
+    return
+  locationStore.selectCity(city, subject)
   locationStore.searchQuery = ''
   locationStore.closeModal()
 }
@@ -70,22 +75,22 @@ onMounted(() => {
         @update:model-value="locationStore.searchQuery = $event"
       />
 
-      <nav v-if="!locationStore.searchQuery" aria-label="Популярные города">
+      <nav v-if="!locationStore.searchQuery && !isTablet" aria-label="Популярные города">
         <ul class="location-picker__modal-popular-cities" role="listbox">
           <li
-            v-for="city in locationStore.mostPopulatedCities"
-            :key="city"
+            v-for="[subject, city] in locationStore.mostPopulatedCities"
+            :key="`${city}(${subject})`"
             class="location-picker__modal-popular-city"
             role="option"
             :aria-selected="city === locationStore.selectedCity"
-            @click="selectCity(city)"
+            @click="selectCity(city, subject)"
           >
             {{ city }}
           </li>
         </ul>
       </nav>
 
-      <section v-if="!locationStore.searchQuery" class="location-picker__modal-columns">
+      <section v-if="!locationStore.searchQuery && !isTablet" class="location-picker__modal-columns">
         <LocationPickerColumn
           ref="districtsRef" column-type="Округ" column-label="Список округов"
           :location-array="locationStore.districts"
@@ -104,19 +109,20 @@ onMounted(() => {
           ref="citiesRef"
           column-type="Город" column-label="Список городов" :location-array="locationStore.cities"
           :selected-location="locationStore.selectedCity"
+          :subject="locationStore.selectedSubject ?? undefined"
           :handler="selectCity"
         />
       </section>
 
-      <section v-if="locationStore.searchQuery" class="location-picker__modal-search-results">
+      <section v-if="locationStore.searchQuery || isTablet" class="location-picker__modal-search-results">
         <ul class="location-picker__modal-search-list">
           <li
-            v-for="city in locationStore.filteredCities"
-            :key="city"
+            v-for="[subject, city] in locationStore.filteredCities"
+            :key="`${city}(${subject})`"
             class="location-picker__modal-search-item"
-            @click="selectCity(city)"
+            @click="selectCity(city, subject)"
           >
-            {{ city }}
+            {{ city }} ({{ subject }})
           </li>
         </ul>
       </section>

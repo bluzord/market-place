@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { LocationPicker } from '@/features/LocationPicker'
+
 import { Button } from '@/shared/ui/Button'
 import { Logo } from '@/shared/ui/Logo'
 import { SearchBar } from '@/shared/ui/SearchBar'

@@ -17,7 +17,7 @@ export const useLocationStore = defineStore('location', () => {
     [...data.value]
       .sort((a, b) => b.population - a.population)
       .slice(0, 10)
-      .map(el => el.name))
+      .map(el => [el.subject, el.name]))
 
   const districts = computed(() =>
     [...new Set(data.value
@@ -51,7 +51,9 @@ export const useLocationStore = defineStore('location', () => {
   })
 
   const filteredCities = computed(() => {
-    return fuseResults.value.map(el => el.item.name)
+    return searchQuery.value
+      ? fuseResults.value.map(el => [el.item.subject, el.item.name])
+      : data.value.sort((a, b) => b.population - a.population).map(el => [el.subject, el.name]).slice(0, 20)
   })
 
   async function fetchCities() {
@@ -67,9 +69,9 @@ export const useLocationStore = defineStore('location', () => {
     }
   }
 
-  function selectCity(city: string) {
+  function selectCity(city: string, subject: string) {
     selectedCity.value = city
-    const cityObj: City | undefined = data.value.find(el => el.name === city)
+    const cityObj: City | undefined = data.value.find(el => el.name === city && el.subject === subject)
     if (!cityObj)
       return
     selectedDistrict.value = cityObj.district

@@ -6,7 +6,8 @@ const props = defineProps<{
   columnLabel: string
   locationArray: string[]
   selectedLocation: string | null
-  handler: (value: string) => void
+  handler: (city: string, subject?: string) => void
+  subject?: string
 }>()
 
 const itemsRef = ref<HTMLElement[]>([])
@@ -40,7 +41,7 @@ defineExpose({ scrollToSelected })
         :class="{ 'location-picker__modal-column-item--selected': location === selectedLocation }"
         role="option"
         :aria-selected="location === selectedLocation"
-        @click="handler(location)"
+        @click="handler(location, subject)"
       >
         {{ location }}
       </li>
