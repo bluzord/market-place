@@ -61,7 +61,7 @@ const iconComponent = computed(() => {
 </script>
 
 <template>
-  <component :is="iconComponent" />
+  <component :is="iconComponent" aria-hidden="true" />
 </template>
 
 <style scoped lang="scss">

@@ -21,7 +21,6 @@ function selectCity(city: string, subject?: string) {
     return
   locationStore.selectCity(city, subject)
   locationStore.searchQuery = ''
-  locationStore.closeModal()
 }
 
 function scrollToSelectedItems() {

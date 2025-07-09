@@ -1,0 +1,55 @@
+@use '@/app/styles/helpers' as *;
+
+.location-picker {
+  &__popover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+
+    @include flex-center();
+
+    border-radius: rem(20);
+    background-color: var(--color-light-gray);
+
+    &-arrow {
+      background-color: var(--color-light-gray);
+      width: rem(14);
+      height: rem(14);
+      rotate: 45deg;
+    }
+
+    &-container {
+      padding: rem(20);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: rem(20);
+    }
+
+    &-info {
+      @include flex-center();
+    }
+
+    &-choice {
+      @include flex-center();
+      gap: rem(12);
+    }
+
+    &-accept,
+    &-deny {
+      padding: rem(6) rem(14);
+    }
+
+    &-deny {
+      background-color: var(--color-light-gray);
+      color: var(--color-dark);
+
+      @include hover() {
+        background-color: var(--color-light-gray);
+        color: var(--color-primary-hover);
+      }
+    }
+  }
+}

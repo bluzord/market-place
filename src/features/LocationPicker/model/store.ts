@@ -12,6 +12,9 @@ export const useLocationStore = defineStore('location', () => {
   const isLoading = ref<boolean>(false)
   const searchQuery = ref<string>('')
   const isModalOpen = ref<boolean>(false)
+  const guessedCity = ref<string>('Москва')
+  const guessedSubject = ref<string>('Москва')
+  const isPopoverOpen = ref<boolean>(false)
 
   const mostPopulatedCities = computed(() =>
     [...data.value]
@@ -81,6 +84,9 @@ export const useLocationStore = defineStore('location', () => {
       subject: selectedSubject.value,
       city: selectedCity.value,
     }))
+    isModalOpen.value = false
+    isPopoverOpen.value = false
+    data.value = []
   }
 
   function selectDistrict(district: string) {
@@ -92,13 +98,49 @@ export const useLocationStore = defineStore('location', () => {
     selectedSubject.value = subject
   }
 
-  function loadCityFromStorage() {
+  async function getLocationByIp() {
+    try {
+      const ipAddress: string = await api.getIP()
+      if (!ipAddress)
+        throw new Error('No ip address found')
+
+      const { location } = await api.getLocation(ipAddress)
+
+      await fetchCities()
+
+      if (!location)
+        throw new Error('No location found')
+
+      const allCities = data.value.map(el => el.name)
+      const allSubjects = data.value.map(el => el.subject)
+      if (allCities.includes(location.data.city)) {
+        guessedCity.value = location.data.city ?? 'Москва'
+
+        if (allSubjects.some(el => el.includes(location.data.region))) {
+          guessedSubject.value = allSubjects.find(el => el.includes(location.data.region)) ?? 'Москва'
+        }
+      }
+    }
+    // eslint-disable-next-line unused-imports/no-unused-vars
+    catch (error) {
+      guessedCity.value = 'Москва'
+      guessedSubject.value = 'Москва'
+    }
+    finally {
+      isPopoverOpen.value = true
+    }
+  }
+
+  async function loadCityFromStorage() {
     const raw = localStorage.getItem('location')
     if (raw) {
       const { district, subject, city } = JSON.parse(raw)
       selectedCity.value = city
       selectedDistrict.value = district
       selectedSubject.value = subject
+    }
+    else {
+      await getLocationByIp()
     }
   }
 
@@ -109,7 +151,10 @@ export const useLocationStore = defineStore('location', () => {
 
   async function openModal() {
     isModalOpen.value = true
-    await fetchCities()
+    isPopoverOpen.value = false
+    if (data.value.length === 0) {
+      await fetchCities()
+    }
   }
 
   return {
@@ -131,5 +176,8 @@ export const useLocationStore = defineStore('location', () => {
     isModalOpen,
     closeModal,
     openModal,
+    guessedCity,
+    guessedSubject,
+    isPopoverOpen,
   }
 })
