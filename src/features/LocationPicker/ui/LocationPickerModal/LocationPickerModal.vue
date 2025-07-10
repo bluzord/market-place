@@ -16,13 +16,6 @@ const citiesRef = ref<InstanceType<typeof LocationPickerColumn> | null>(null)
 
 const { isTablet } = useBreakpoint()
 
-function selectCity(city: string, subject?: string) {
-  if (!subject)
-    return
-  locationStore.selectCity(city, subject)
-  locationStore.searchQuery = ''
-}
-
 function scrollToSelectedItems() {
   districtsRef.value?.scrollToSelected()
   subjectsRef.value?.scrollToSelected()
@@ -82,7 +75,7 @@ onMounted(() => {
             class="location-picker__modal-popular-city"
             role="option"
             :aria-selected="city === locationStore.selectedCity"
-            @click="selectCity(city, subject)"
+            @click="locationStore.selectCity(city, subject)"
           >
             {{ city }}
           </li>
@@ -109,7 +102,7 @@ onMounted(() => {
           column-type="Город" column-label="Список городов" :location-array="locationStore.cities"
           :selected-location="locationStore.selectedCity"
           :subject="locationStore.selectedSubject ?? undefined"
-          :handler="selectCity"
+          :handler="locationStore.selectCity"
         />
       </section>
 
@@ -119,7 +112,7 @@ onMounted(() => {
             v-for="[subject, city] in locationStore.filteredCities"
             :key="`${city}(${subject})`"
             class="location-picker__modal-search-item"
-            @click="selectCity(city, subject)"
+            @click="locationStore.selectCity(city, subject)"
           >
             {{ city }} ({{ subject }})
           </li>

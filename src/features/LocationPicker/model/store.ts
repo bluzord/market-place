@@ -72,7 +72,7 @@ export const useLocationStore = defineStore('location', () => {
     }
   }
 
-  function selectCity(city: string, subject: string) {
+  function selectCity(city: string, subject?: string) {
     selectedCity.value = city
     const cityObj: City | undefined = data.value.find(el => el.name === city && el.subject === subject)
     if (!cityObj)
@@ -86,6 +86,7 @@ export const useLocationStore = defineStore('location', () => {
     }))
     isModalOpen.value = false
     isPopoverOpen.value = false
+    searchQuery.value = ''
     data.value = []
   }
 
