@@ -73,6 +73,7 @@ onMounted(() => {
             v-for="[subject, city] in locationStore.mostPopulatedCities"
             :key="`${city}(${subject})`"
             class="location-picker__modal-popular-city"
+            :class="{ 'location-picker__modal-popular-city--selected': city === locationStore.selectedCity }"
             role="option"
             :aria-selected="city === locationStore.selectedCity"
             @click="locationStore.selectCity(city, subject)"

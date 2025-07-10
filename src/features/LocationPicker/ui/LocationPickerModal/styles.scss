@@ -76,6 +76,11 @@
         color: var(--color-light);
         background-color: var(--color-primary);
       }
+
+      &--selected {
+        background-color: var(--color-primary);
+        color: var(--color-light);
+      }
     }
 
     &-columns {
