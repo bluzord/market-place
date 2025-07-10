@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { onClickOutside } from '@vueuse/core'
+import { onClickOutside, onKeyStroke } from '@vueuse/core'
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { onMounted, ref, watch } from 'vue'
 import { useLocationStore } from '@/features/LocationPicker/model/store.ts'
 import { LocationPickerColumn } from '@/features/LocationPicker/ui/LocationPickerColumn'
@@ -9,12 +10,23 @@ import { Loader } from '@/shared/ui/Loader'
 import { SearchBar } from '@/shared/ui/SearchBar'
 
 const locationStore = useLocationStore()
+
 const modalRef = ref<HTMLDivElement | null>(null)
+const searchBarRef = ref<InstanceType<typeof SearchBar> | null>(null)
 const districtsRef = ref<InstanceType<typeof LocationPickerColumn> | null>(null)
 const subjectsRef = ref<InstanceType<typeof LocationPickerColumn> | null>(null)
 const citiesRef = ref<InstanceType<typeof LocationPickerColumn> | null>(null)
 
 const { isTablet } = useBreakpoint()
+
+onClickOutside(modalRef, locationStore.closeModal)
+useFocusTrap(modalRef, { immediate: true })
+
+onKeyStroke('Escape', (e) => {
+  e.preventDefault()
+  if (locationStore.isModalOpen)
+    locationStore.closeModal()
+})
 
 function scrollToSelectedItems() {
   districtsRef.value?.scrollToSelected()
@@ -22,11 +34,11 @@ function scrollToSelectedItems() {
   citiesRef.value?.scrollToSelected()
 }
 
-onClickOutside(modalRef, locationStore.closeModal)
-
 watch(() => locationStore.isLoading, (isLoading) => {
   if (!isLoading && locationStore.data.length > 0) {
-    setTimeout(() => scrollToSelectedItems(), 0)
+    setTimeout(() => {
+      scrollToSelectedItems()
+    }, 0)
   }
 }, { immediate: true })
 
@@ -53,6 +65,7 @@ onMounted(() => {
         <button
           class="location-picker__modal-close"
           aria-label="Закрыть выбор города"
+          tabindex="-1"
           @click="locationStore.closeModal()"
         >
           <Icon icon="cross" class="location-picker__modal-close-icon" />
@@ -60,6 +73,7 @@ onMounted(() => {
       </header>
 
       <SearchBar
+        ref="searchBarRef"
         :model-value="locationStore.searchQuery"
         placeholder="Найти город"
         class="location-picker__modal-search"
@@ -72,11 +86,13 @@ onMounted(() => {
           <li
             v-for="[subject, city] in locationStore.mostPopulatedCities"
             :key="`${city}(${subject})`"
+            tabindex="0"
             class="location-picker__modal-popular-city"
             :class="{ 'location-picker__modal-popular-city--selected': city === locationStore.selectedCity }"
             role="option"
             :aria-selected="city === locationStore.selectedCity"
             @click="locationStore.selectCity(city, subject)"
+            @keydown.enter="locationStore.selectCity(city, subject)"
           >
             {{ city }}
           </li>
@@ -107,13 +123,15 @@ onMounted(() => {
         />
       </section>
 
-      <section v-if="locationStore.searchQuery || isTablet" class="location-picker__modal-search-results">
-        <ul class="location-picker__modal-search-list">
+      <section v-if="locationStore.searchQuery || isTablet" class="location-picker__modal-search-results" tabindex="-1">
+        <ul class="location-picker__modal-search-list" tabindex="-1">
           <li
             v-for="[subject, city] in locationStore.filteredCities"
             :key="`${city}(${subject})`"
+            tabindex="0"
             class="location-picker__modal-search-item"
             @click="locationStore.selectCity(city, subject)"
+            @keydown.enter="locationStore.selectCity(city, subject)"
           >
             {{ city }} ({{ subject }})
           </li>

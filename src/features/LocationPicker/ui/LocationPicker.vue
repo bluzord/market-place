@@ -21,6 +21,7 @@ onMounted(() => {
       aria-label="Выбрать город"
       title="Выбрать город"
       @click="locationStore.openModal"
+      @keydown.enter="locationStore.openModal"
     >
       <Icon icon="location" class="location-picker__trigger-icon" />
       <span class="location-picker__trigger-city">

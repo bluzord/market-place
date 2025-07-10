@@ -93,10 +93,16 @@ watch(() => locationStore.isPopoverOpen, async (isOpen) => {
         <Button
           class="location-picker__popover-accept" variant="filled"
           @click="locationStore.selectCity(locationStore.guessedCity, locationStore.guessedSubject)"
+          @keydown.enter="locationStore.selectCity(locationStore.guessedCity, locationStore.guessedSubject)"
         >
           Все верно
         </Button>
-        <Button class="location-picker__popover-deny" variant="filled" @click="locationStore.openModal()">
+        <Button
+          class="location-picker__popover-deny"
+          variant="filled"
+          @click="locationStore.openModal()"
+          @keydown.enter="locationStore.openModal()"
+        >
           Выбрать город
         </Button>
       </footer>

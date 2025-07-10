@@ -32,16 +32,18 @@ defineExpose({ scrollToSelected })
     <h3 class="location-picker__modal-column-title">
       {{ columnType }}
     </h3>
-    <ul class="location-picker__modal-column-items" role="listbox" :aria-label="columnLabel">
+    <ul class="location-picker__modal-column-items" role="listbox" :aria-label="columnLabel" tabindex="-1">
       <li
         v-for="location in locationArray"
         ref="itemsRef"
         :key="location"
+        tabindex="0"
         class="location-picker__modal-column-item"
         :class="{ 'location-picker__modal-column-item--selected': location === selectedLocation }"
         role="option"
         :aria-selected="location === selectedLocation"
         @click="handler(location, subject)"
+        @keydown.enter="handler(location, subject)"
       >
         {{ location }}
       </li>

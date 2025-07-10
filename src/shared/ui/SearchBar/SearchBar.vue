@@ -48,7 +48,7 @@ function clearInput(): void {
     :aria-label="placeholder"
     @click="handleFocus"
     @focus="handleFocus"
-    @keydown.esc="handleEsc"
+    @keydown.esc.stop="handleEsc"
   >
     <div class="search-bar__center">
       <Icon
