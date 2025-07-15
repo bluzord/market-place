@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onClickOutside, onKeyStroke } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
-import { onMounted, ref, watch } from 'vue'
+import { nextTick, onMounted, ref, watch } from 'vue'
 import { useLocationStore } from '@/features/LocationPicker/model/store.ts'
 import { LocationPickerColumn } from '@/features/LocationPicker/ui/LocationPickerColumn'
 import { useBreakpoint } from '@/shared/composables/useBreakpoint.ts'
@@ -20,12 +20,24 @@ const citiesRef = ref<InstanceType<typeof LocationPickerColumn> | null>(null)
 const { isTablet } = useBreakpoint()
 
 onClickOutside(modalRef, locationStore.closeModal)
-useFocusTrap(modalRef, { immediate: true })
+const { activate, deactivate } = useFocusTrap(modalRef, { immediate: true })
 
 onKeyStroke('Escape', (e) => {
   e.preventDefault()
   if (locationStore.isModalOpen)
     locationStore.closeModal()
+})
+
+onKeyStroke('Enter', () => {
+  if (locationStore.isModalOpen) {
+    if (locationStore.filteredCities.length === 1) {
+      const [subject, city] = locationStore.filteredCities[0]
+      locationStore.selectCity(city, subject)
+    }
+    if (locationStore.filteredCities.length === 0) {
+      locationStore.closeModal()
+    }
+  }
 })
 
 function scrollToSelectedItems() {
@@ -41,6 +53,18 @@ watch(() => locationStore.isLoading, (isLoading) => {
     }, 0)
   }
 }, { immediate: true })
+
+watch(() => locationStore.isModalOpen, async (isOpen) => {
+  if (isOpen) {
+    await nextTick()
+    if (modalRef.value) {
+      activate()
+    }
+  }
+  else {
+    deactivate()
+  }
+})
 
 onMounted(() => {
   if (!locationStore.isLoading && locationStore.data.length > 0) {
@@ -124,6 +148,9 @@ onMounted(() => {
       </section>
 
       <section v-if="locationStore.searchQuery || isTablet" class="location-picker__modal-search-results" tabindex="-1">
+        <div class="location-picker__modal-search-selected">
+          {{ locationStore.selectedCity }} ({{ locationStore.selectedSubject }})
+        </div>
         <ul class="location-picker__modal-search-list" tabindex="-1">
           <li
             v-for="[subject, city] in locationStore.filteredCities"
@@ -136,6 +163,10 @@ onMounted(() => {
             {{ city }} ({{ subject }})
           </li>
         </ul>
+        <div v-if="locationStore.filteredCities.length === 1" class="location-picker__modal-search-hint">
+          Для выбора нажмите Enter
+          <Icon icon="arrow-right" class="location-picker__modal-search-hint-icon" />
+        </div>
       </section>
     </div>
   </div>

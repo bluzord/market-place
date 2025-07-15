@@ -55,8 +55,14 @@ export const useLocationStore = defineStore('location', () => {
 
   const filteredCities = computed(() => {
     return searchQuery.value
-      ? fuseResults.value.map(el => [el.item.subject, el.item.name])
-      : data.value.sort((a, b) => b.population - a.population).map(el => [el.subject, el.name]).slice(0, 20)
+      ? fuseResults.value
+          .filter(el => el.item.name !== selectedCity.value || el.item.subject !== selectedSubject.value)
+          .map(el => [el.item.subject, el.item.name])
+      : data.value
+          .sort((a, b) => b.population - a.population)
+          .filter(el => el.name !== selectedCity.value || el.subject !== selectedSubject.value)
+          .map(el => [el.subject, el.name])
+          .slice(0, 20)
   })
 
   async function fetchCities() {
@@ -84,10 +90,8 @@ export const useLocationStore = defineStore('location', () => {
       subject: selectedSubject.value,
       city: selectedCity.value,
     }))
-    isModalOpen.value = false
+    closeModal()
     isPopoverOpen.value = false
-    searchQuery.value = ''
-    data.value = []
   }
 
   function selectDistrict(district: string) {
@@ -148,6 +152,7 @@ export const useLocationStore = defineStore('location', () => {
   function closeModal() {
     isModalOpen.value = false
     data.value = []
+    searchQuery.value = ''
   }
 
   async function openModal() {

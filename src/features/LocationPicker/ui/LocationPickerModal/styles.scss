@@ -90,14 +90,21 @@
     }
 
     &-search-results {
-      max-height: rem(527);
-      overflow: auto;
+    }
+
+    &-search-selected {
+      @include flex-center();
+      color: var(--color-primary-active);
+      font-weight: 800;
+      margin-bottom: rem(10);
     }
 
     &-search-list {
       display: flex;
       flex-direction: column;
       gap: rem(10);
+      max-height: rem(527);
+      overflow: auto;
     }
 
     &-search-item {
@@ -108,7 +115,19 @@
 
       &:focus {
         outline: none;
-        color: var(--color-primary-active);
+        color: var(--color-primary-hover);
+      }
+    }
+
+    &-search-hint {
+      display: flex;
+      align-items: center;
+      margin-top: rem(5);
+      color: var(--color-dark-accent);
+
+      &-icon {
+        width: rem(20);
+        height: rem(20);
       }
     }
   }
