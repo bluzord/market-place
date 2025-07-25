@@ -10,6 +10,7 @@
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.3);
     z-index: 1000;
+    overflow: hidden;
 
     &-content {
       display: flex;
@@ -90,13 +91,17 @@
     }
 
     &-search-results {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: rem(10);
     }
 
     &-search-selected {
       @include flex-center();
       color: var(--color-primary-active);
       font-weight: 800;
-      margin-bottom: rem(10);
+      text-align: center;
     }
 
     &-search-list {
@@ -104,6 +109,7 @@
       flex-direction: column;
       gap: rem(10);
       max-height: rem(527);
+      height: auto;
       overflow: auto;
     }
 
@@ -128,6 +134,44 @@
       &-icon {
         width: rem(20);
         height: rem(20);
+      }
+    }
+
+    @include tablet {
+      &-content {
+        width: rem(700);
+        height: rem(700);
+      }
+
+      &-search-results {
+        gap: rem(20);
+      }
+
+      &-search-list {
+        max-height: rem(480);
+        height: auto;
+        gap: rem(20);
+      }
+
+      &-search-hint {
+        margin-top: 0;
+      }
+    }
+
+    @include mobile {
+      position: absolute;
+      max-height: 100vh;
+      max-width: 100vw;
+
+      &-content {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+      }
+
+      &-search-list {
+        max-height: 75vh;
+        height: auto;
       }
     }
   }

@@ -153,6 +153,7 @@ export const useLocationStore = defineStore('location', () => {
     isModalOpen.value = false
     data.value = []
     searchQuery.value = ''
+    document.body.style.overflow = ''
   }
 
   async function openModal() {
@@ -161,6 +162,7 @@ export const useLocationStore = defineStore('location', () => {
     if (data.value.length === 0) {
       await fetchCities()
     }
+    document.body.style.overflow = 'hidden'
   }
 
   return {
